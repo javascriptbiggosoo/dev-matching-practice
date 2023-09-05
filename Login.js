@@ -29,7 +29,7 @@ class Login {
   }
 
   checkEmail(email = "") {
-    // console.log("메일검사");
+    console.log("메일검사");
     if (email.includes("@")) {
       const [account, domain] = email.split("@");
       // console.log(`account: ${account}, domain:${domain}`);
@@ -49,51 +49,72 @@ class Login {
       let isSomethingWrong = false;
       for (let i = 0; i < account.length; i++) {
         const curr = account[i];
-        console.log(curr);
-        console.log(isSomethingWrong);
-        // 2.1.2 TODO: 영문 대소문자 포함 가능
+        // 2.1.2 영문 대소문자 포함 가능
         if (curr !== curr.toUpperCase() || curr !== curr.toLowerCase()) {
-          console.log("영어임");
+          console.log(curr + ": 영어임");
           continue;
         }
-        // 2.1.2 TODO: 숫자 포함 가능
+        // 2.1.2 숫자 포함 가능
         if (Number.isFinite(+curr)) {
-          console.log("숫자임");
+          console.log(curr + ": 숫자임");
           continue;
         }
-        // 2.1.2 TODO: 특수문자(.) 포함 가능
+        // 2.1.2 특수문자(.) 포함 가능
         if (curr === ".") {
-          console.log("점임");
+          console.log(curr + ": 점임");
           continue;
         }
 
-        console.error("개뿔아무것도아님");
+        console.error("계정 잘못!!");
         isSomethingWrong = true;
       }
       if (isSomethingWrong) return false;
 
       /* 
-      2.2 TODO: 도메인 입력 조건
+      2.2 도메인 입력 조건
       */
-      // 2.2.2 TODO: 도메인은 무조건 .co로 끝
+      // 2.2.2 도메인은 무조건 .co로 끝
       if (
-        email[email.length - 1] !== "o" ||
-        email[email.length - 2] !== "c" ||
-        email[email.length - 3] !== "."
+        domain[domain.length - 1] !== "o" ||
+        domain[domain.length - 2] !== "c" ||
+        domain[domain.length - 3] !== "."
       ) {
-        console.log("도메인을 .co로 하세요");
+        console.error("도메인을 .co로 하세요");
         return false;
       }
-      const emailFront = email.slice(0, length - 3);
-      console.log(emailFront);
-      // 2.2.1 TODO: 영문 대소문자 필수 포함
-      if (email === email.toUpperCase() && email === email.toLowerCase()) {
+
+      const domainFront = domain.slice(0, length - 3);
+      console.log("도메인: " + domainFront);
+      // 2.2.1 영문 대소문자 필수 포함
+      if (
+        domainFront === domainFront.toUpperCase() &&
+        domainFront === domainFront.toLowerCase()
+      ) {
         console.error("영어가 없음;");
         return false;
       }
-      // 2.2.2 TODO: 영문 대소문자 포함 가능
-      // 2.2.2 TODO: 숫자 포함 가능
-      // 2.2.2 TODO: 특수문자(., -, _) 포함 가능
+
+      for (let i = 0; i < domainFront.length; i++) {
+        const curr = domainFront[i];
+        // 2.2.2 영문 대소문자 포함 가능
+        if (curr !== curr.toUpperCase() || curr !== curr.toLowerCase()) {
+          console.log(curr + ": 영어임");
+          continue;
+        }
+        // 2.2.2 숫자 포함 가능
+        if (Number.isFinite(+curr)) {
+          console.log(curr + ": 숫자임");
+          continue;
+        }
+        // 2.2.2 특수문자(., -, _) 포함 가능
+        if (curr === "." || curr === "-" || curr === "_") {
+          console.log(curr + ": 특수문자임");
+          continue;
+        }
+
+        console.error("도메인 잘못!!");
+        isSomethingWrong = true;
+      }
     } else {
       console.error("@가 없음;");
       return false;
@@ -103,15 +124,51 @@ class Login {
   }
 
   checkPassword = (password = "") => {
-    // console.log("비번검사");
-    // 3. TODO: 비밀번호 길이 요구사항
+    console.log("비번검사");
+    // 3.1 비밀번호 길이 요구사항
     if (password.length > 20 || password.length < 8) {
       window.alert(
         "비밀번호는 최소 8자 이상, 최대 20자 이하로 구성해야 합니다."
       );
       return false;
     }
-    // 3. TODO: 비밀번호 형식 요구사항
+
+    // 3.2 TODO: 비밀번호 형식 요구사항
+    let 영문포함 = false;
+    let 숫자포함 = false;
+    let 되는특문포함 = false;
+    let 안되는특문포함 = false;
+    for (let i = 0; i < password.length; i++) {
+      const curr = password[i];
+      // 3.2.1 TODO: 영문 포함
+      if (curr !== curr.toUpperCase() || curr !== curr.toLowerCase()) {
+        영문포함 = true;
+        console.log(curr + ": 영어임");
+        continue;
+      }
+      // 3.2.2 TODO: 숫자 포함
+      if (Number.isFinite(+curr)) {
+        숫자포함 = true;
+        console.log(curr + ": 숫자임");
+        continue;
+      }
+      // 3.2.3 TODO: '!', '@', '~' 중 하나 포함
+      if (curr === "." || curr === "@" || curr === "~") {
+        되는특문포함 = true;
+        console.log(curr + ": 특문임");
+        continue;
+      }
+      안되는특문포함 = true;
+    }
+    if (!(영문포함 && 숫자포함 && 되는특문포함)) {
+      console.error("비번 뭔가 빠짐!!");
+      window.alert("비밀번호는 영문, 숫자, 특수문자를 모두 포함해야 합니다.");
+      return false;
+    } else if (안되는특문포함) {
+      console.error("안되는 특문 포함!!");
+      window.alert("비밀번호는 영문, 숫자, 특수문자를 모두 포함해야 합니다.");
+      return false;
+    }
 
     return true;
   };
