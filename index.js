@@ -1,5 +1,3 @@
-import Login from "./Login.js";
-import Reservation from "./Reservation.js";
+import App from "./src/App.js";
 
-const login = new Login();
-const reservation = new Reservation();
+new App();

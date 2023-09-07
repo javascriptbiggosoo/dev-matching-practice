@@ -1,8 +1,8 @@
 /* DONE */
 // 1. Login 버튼 클릭하기
 /* TODO */
-// 2. TODO: 이메일 입력하기
-// 3. TODO: 비밀번호 입력하기
+// 2. 이메일 입력하기
+// 3. 비밀번호 입력하기
 
 class Login {
   $emailInput = document.querySelector("#email");
@@ -10,23 +10,27 @@ class Login {
   $theaterLoginBtn = document.querySelector("#theaterLoginBtn");
 
   constructor() {
-    theaterLoginBtn.addEventListener("click", () => {
-      if (!(this.$passwordInput.value && this.$emailInput.value)) {
-        window.alert("이메일 혹은 비밀번호가 입력되지 않았습니다.");
-        // 1. 이메일 혹은 비밀번호가 입력되지 않았거나 이메일과 비밀번호 모두 입력되지 않은 경우
-        return;
-      }
+    theaterLoginBtn.addEventListener("click", this.handleLoginClick.bind(this));
 
-      const isValidEmail = this.checkEmail(this.$emailInput.value);
-      if (!isValidEmail) {
-        window.alert("이메일 형식이 올바르지 않습니다.");
-        return;
-      }
-      const isValidPassword = this.checkPassword(this.$passwordInput.value);
-      // 1. 모든 조건을 만족한 경우
-      if (isValidPassword) window.alert("로그인 성공!");
-    });
+    this.render();
   }
+  handleLoginClick() {
+    if (!(this.$passwordInput.value && this.$emailInput.value)) {
+      window.alert("이메일 혹은 비밀번호가 입력되지 않았습니다.");
+      // 1. 이메일 혹은 비밀번호가 입력되지 않았거나 이메일과 비밀번호 모두 입력되지 않은 경우
+      return;
+    }
+
+    const isValidEmail = this.checkEmail(this.$emailInput.value);
+    if (!isValidEmail) {
+      window.alert("이메일 형식이 올바르지 않습니다.");
+      return;
+    }
+    const isValidPassword = this.checkPassword(this.$passwordInput.value);
+    // 1. 모든 조건을 만족한 경우
+    if (isValidPassword) window.alert("로그인 성공!");
+  }
+  render() {}
 
   checkEmail(email = "") {
     console.log("메일검사");
