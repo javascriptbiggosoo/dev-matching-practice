@@ -9,11 +9,15 @@ class Login {
   $passwordInput = document.querySelector("#password");
   $theaterLoginBtn = document.querySelector("#theaterLoginBtn");
 
+  // 기본적으로 인스턴스 생성 시 실행됨
   constructor() {
     theaterLoginBtn.addEventListener("click", this.handleLoginClick.bind(this));
 
     this.render();
   }
+  // 리렌더 때 필요한 것들만 넣어
+  render() {}
+
   handleLoginClick() {
     if (!(this.$passwordInput.value && this.$emailInput.value)) {
       window.alert("이메일 혹은 비밀번호가 입력되지 않았습니다.");
@@ -30,7 +34,6 @@ class Login {
     // 1. 모든 조건을 만족한 경우
     if (isValidPassword) window.alert("로그인 성공!");
   }
-  render() {}
 
   checkEmail(email = "") {
     console.log("메일검사");
