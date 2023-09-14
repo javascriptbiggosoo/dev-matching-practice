@@ -24,16 +24,20 @@ class Login {
       // 1. 이메일 혹은 비밀번호가 입력되지 않았거나 이메일과 비밀번호 모두 입력되지 않은 경우
       return;
     }
-
+    // 2. 이메일 검증
     const isValidEmail = this.checkEmail(this.$emailInput.value);
     if (!isValidEmail) {
       window.alert("이메일 형식이 올바르지 않습니다.");
       return;
     }
+    // 3. 비번 검증
     const isValidPassword = this.checkPassword(this.$passwordInput.value);
+
     // 1. 모든 조건을 만족한 경우
-    if (isValidPassword) window.alert("로그인 성공!");
+    if (isValidEmail && isValidPassword) window.alert("로그인 성공!");
   }
+  checkEmailAccount() {}
+  checkEmailDomain() {}
 
   checkEmail(email = "") {
     console.log("메일검사");
