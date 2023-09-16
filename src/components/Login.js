@@ -24,110 +24,118 @@ class Login {
       // 1. 이메일 혹은 비밀번호가 입력되지 않았거나 이메일과 비밀번호 모두 입력되지 않은 경우
       return;
     }
-    // 2. 이메일 검증
-    const isValidEmail = this.checkEmail(this.$emailInput.value);
-    if (!isValidEmail) {
-      window.alert("이메일 형식이 올바르지 않습니다.");
-      return;
-    }
-    // 3. 비번 검증
-    const isValidPassword = this.checkPassword(this.$passwordInput.value);
 
-    // 1. 모든 조건을 만족한 경우
-    if (isValidEmail && isValidPassword) window.alert("로그인 성공!");
+    if (
+      // 2. 이메일 검증
+      this.checkEmail(this.$emailInput.value) &&
+      // 3. 비번 검증
+      this.checkPassword(this.$passwordInput.value)
+    ) {
+      // 1. 모든 조건을 만족한 경우
+      window.alert("로그인 성공!");
+    }
   }
-  checkEmailAccount() {}
-  checkEmailDomain() {}
+
+  checkEmailAccount(account = "") {
+    // 2.1 영문 대소문자 필수 포함
+    if (
+      account === account.toUpperCase() &&
+      account === account.toLowerCase()
+    ) {
+      console.error("영어가 없음;");
+      window.alert("이메일 형식이 올바르지 않습니다.");
+      return false;
+    }
+
+    for (let i = 0; i < account.length; i++) {
+      const curr = account[i];
+      // 2.1.2 영문 대소문자 포함 가능
+      if (curr !== curr.toUpperCase() || curr !== curr.toLowerCase()) {
+        console.log(curr + ": 영어임");
+        continue;
+      }
+      // 2.1.2 숫자 포함 가능
+      if (Number.isFinite(+curr)) {
+        console.log(curr + ": 숫자임");
+        continue;
+      }
+      // 2.1.2 특수문자(.) 포함 가능
+      if (curr === ".") {
+        console.log(curr + ": 점임");
+        continue;
+      }
+
+      console.error("계정 잘못!!");
+      window.alert("이메일 형식이 올바르지 않습니다.");
+      return false;
+    }
+    return true;
+  }
+  checkEmailDomain(domain = "") {
+    // 2.2.2 도메인은 무조건 .co로 끝
+    if (
+      domain[domain.length - 1] !== "o" ||
+      domain[domain.length - 2] !== "c" ||
+      domain[domain.length - 3] !== "."
+    ) {
+      console.error("도메인을 .co로 하세요");
+      window.alert("이메일 형식이 올바르지 않습니다.");
+      return false;
+    }
+
+    const domainFront = domain.slice(0, length - 3);
+    console.log("도메인: " + domainFront);
+    // 2.2.1 영문 대소문자 필수 포함
+    if (
+      domainFront === domainFront.toUpperCase() &&
+      domainFront === domainFront.toLowerCase()
+    ) {
+      console.error("영어가 없음;");
+      window.alert("이메일 형식이 올바르지 않습니다.");
+      return false;
+    }
+
+    for (let i = 0; i < domainFront.length; i++) {
+      const curr = domainFront[i];
+      // 2.2.2 영문 대소문자 포함 가능
+      if (curr !== curr.toUpperCase() || curr !== curr.toLowerCase()) {
+        console.log(curr + ": 영어임");
+        continue;
+      }
+      // 2.2.2 숫자 포함 가능
+      if (Number.isFinite(+curr)) {
+        console.log(curr + ": 숫자임");
+        continue;
+      }
+      // 2.2.2 특수문자(., -, _) 포함 가능
+      if (curr === "." || curr === "-" || curr === "_") {
+        console.log(curr + ": 특수문자임");
+        continue;
+      }
+
+      console.error("도메인 잘못!!");
+      window.alert("이메일 형식이 올바르지 않습니다.");
+      return false;
+    }
+    return true;
+  }
 
   checkEmail(email = "") {
-    console.log("메일검사");
+    console.log("메일 검사");
     if (email.includes("@")) {
       const [account, domain] = email.split("@");
       // console.log(`account: ${account}, domain:${domain}`);
 
-      /* 
-      2.1 계정 입력 조건
-      */
-      // 2.1 영문 대소문자 필수 포함
-      if (
-        account === account.toUpperCase() &&
-        account === account.toLowerCase()
-      ) {
-        console.error("영어가 없음;");
-        return false;
-      }
+      // 2.1 계정 입력 조건
+      const isValidEmailAccount = this.checkEmailAccount(account);
+      if (!isValidEmailAccount) return false;
 
-      let isSomethingWrong = false;
-      for (let i = 0; i < account.length; i++) {
-        const curr = account[i];
-        // 2.1.2 영문 대소문자 포함 가능
-        if (curr !== curr.toUpperCase() || curr !== curr.toLowerCase()) {
-          console.log(curr + ": 영어임");
-          continue;
-        }
-        // 2.1.2 숫자 포함 가능
-        if (Number.isFinite(+curr)) {
-          console.log(curr + ": 숫자임");
-          continue;
-        }
-        // 2.1.2 특수문자(.) 포함 가능
-        if (curr === ".") {
-          console.log(curr + ": 점임");
-          continue;
-        }
-
-        console.error("계정 잘못!!");
-        isSomethingWrong = true;
-      }
-      if (isSomethingWrong) return false;
-
-      /* 
-      2.2 도메인 입력 조건
-      */
-      // 2.2.2 도메인은 무조건 .co로 끝
-      if (
-        domain[domain.length - 1] !== "o" ||
-        domain[domain.length - 2] !== "c" ||
-        domain[domain.length - 3] !== "."
-      ) {
-        console.error("도메인을 .co로 하세요");
-        return false;
-      }
-
-      const domainFront = domain.slice(0, length - 3);
-      console.log("도메인: " + domainFront);
-      // 2.2.1 영문 대소문자 필수 포함
-      if (
-        domainFront === domainFront.toUpperCase() &&
-        domainFront === domainFront.toLowerCase()
-      ) {
-        console.error("영어가 없음;");
-        return false;
-      }
-
-      for (let i = 0; i < domainFront.length; i++) {
-        const curr = domainFront[i];
-        // 2.2.2 영문 대소문자 포함 가능
-        if (curr !== curr.toUpperCase() || curr !== curr.toLowerCase()) {
-          console.log(curr + ": 영어임");
-          continue;
-        }
-        // 2.2.2 숫자 포함 가능
-        if (Number.isFinite(+curr)) {
-          console.log(curr + ": 숫자임");
-          continue;
-        }
-        // 2.2.2 특수문자(., -, _) 포함 가능
-        if (curr === "." || curr === "-" || curr === "_") {
-          console.log(curr + ": 특수문자임");
-          continue;
-        }
-
-        console.error("도메인 잘못!!");
-        isSomethingWrong = true;
-      }
+      // 2.2 도메인 입력 조건
+      let isValidEmailDomain = this.checkEmailDomain(domain);
+      if (!isValidEmailDomain) return false;
     } else {
       console.error("@가 없음;");
+      window.alert("이메일 형식이 올바르지 않습니다.");
       return false;
     }
     // 2. 모든 조건을 만족한 경우
@@ -135,7 +143,7 @@ class Login {
   }
 
   checkPassword = (password = "") => {
-    console.log("비번검사");
+    console.log("비번 검사");
     // 3.1 비밀번호 길이 요구사항
     if (password.length > 20 || password.length < 8) {
       window.alert(
