@@ -36,110 +36,15 @@ class Login {
     }
   }
 
-  checkEmailAccount(account = "") {
-    // 2.1 영문 대소문자 필수 포함
-    if (
-      account === account.toUpperCase() &&
-      account === account.toLowerCase()
-    ) {
-      console.error("영어가 없음;");
-      window.alert("이메일 형식이 올바르지 않습니다.");
-      return false;
-    }
-
-    for (let i = 0; i < account.length; i++) {
-      const curr = account[i];
-      // 2.1.2 영문 대소문자 포함 가능
-      if (curr !== curr.toUpperCase() || curr !== curr.toLowerCase()) {
-        console.log(curr + ": 영어임");
-        continue;
-      }
-      // 2.1.2 숫자 포함 가능
-      if (Number.isFinite(+curr)) {
-        console.log(curr + ": 숫자임");
-        continue;
-      }
-      // 2.1.2 특수문자(.) 포함 가능
-      if (curr === ".") {
-        console.log(curr + ": 점임");
-        continue;
-      }
-
-      console.error("계정 잘못!!");
-      window.alert("이메일 형식이 올바르지 않습니다.");
-      return false;
-    }
-    return true;
-  }
-  checkEmailDomain(domain = "") {
-    // 2.2.2 도메인은 무조건 .co로 끝
-    if (
-      domain[domain.length - 1] !== "o" ||
-      domain[domain.length - 2] !== "c" ||
-      domain[domain.length - 3] !== "."
-    ) {
-      console.error("도메인을 .co로 하세요");
-      window.alert("이메일 형식이 올바르지 않습니다.");
-      return false;
-    }
-
-    const domainFront = domain.slice(0, length - 3);
-    console.log("도메인: " + domainFront);
-    // 2.2.1 영문 대소문자 필수 포함
-    if (
-      domainFront === domainFront.toUpperCase() &&
-      domainFront === domainFront.toLowerCase()
-    ) {
-      console.error("영어가 없음;");
-      window.alert("이메일 형식이 올바르지 않습니다.");
-      return false;
-    }
-
-    for (let i = 0; i < domainFront.length; i++) {
-      const curr = domainFront[i];
-      // 2.2.2 영문 대소문자 포함 가능
-      if (curr !== curr.toUpperCase() || curr !== curr.toLowerCase()) {
-        console.log(curr + ": 영어임");
-        continue;
-      }
-      // 2.2.2 숫자 포함 가능
-      if (Number.isFinite(+curr)) {
-        console.log(curr + ": 숫자임");
-        continue;
-      }
-      // 2.2.2 특수문자(., -, _) 포함 가능
-      if (curr === "." || curr === "-" || curr === "_") {
-        console.log(curr + ": 특수문자임");
-        continue;
-      }
-
-      console.error("도메인 잘못!!");
-      window.alert("이메일 형식이 올바르지 않습니다.");
-      return false;
-    }
-    return true;
-  }
-
   checkEmail(email = "") {
     console.log("메일 검사");
-    if (email.includes("@")) {
-      const [account, domain] = email.split("@");
-      // console.log(`account: ${account}, domain:${domain}`);
-
-      // 2.1 계정 입력 조건
-      const isValidEmailAccount = this.checkEmailAccount(account);
-      if (!isValidEmailAccount) return false;
-
-      // 2.2 도메인 입력 조건
-      let isValidEmailDomain = this.checkEmailDomain(domain);
-      if (!isValidEmailDomain) return false;
+    const regex = /^[a-zA-Z0-9\.]+@[a-z0-9-_\.]+\.co$/;
+    if (regex.test(email)) {
+      return true;
     } else {
-      console.error("@가 없음;");
       window.alert("이메일 형식이 올바르지 않습니다.");
       return false;
     }
-    // 2. 모든 조건을 만족한 경우
-    return true;
   }
 
   checkPassword = (password = "") => {
@@ -153,43 +58,13 @@ class Login {
     }
 
     // 3.2 TODO: 비밀번호 형식 요구사항
-    let 영문포함 = false;
-    let 숫자포함 = false;
-    let 되는특문포함 = false;
-    let 안되는특문포함 = false;
-    for (let i = 0; i < password.length; i++) {
-      const curr = password[i];
-      // 3.2.1 TODO: 영문 포함
-      if (curr !== curr.toUpperCase() || curr !== curr.toLowerCase()) {
-        영문포함 = true;
-        console.log(curr + ": 영어임");
-        continue;
-      }
-      // 3.2.2 TODO: 숫자 포함
-      if (Number.isFinite(+curr)) {
-        숫자포함 = true;
-        console.log(curr + ": 숫자임");
-        continue;
-      }
-      // 3.2.3 TODO: '!', '@', '~' 중 하나 포함
-      if (curr === "." || curr === "@" || curr === "~") {
-        되는특문포함 = true;
-        console.log(curr + ": 특문임");
-        continue;
-      }
-      안되는특문포함 = true;
-    }
-    if (!(영문포함 && 숫자포함 && 되는특문포함)) {
-      console.error("비번 뭔가 빠짐!!");
-      window.alert("비밀번호는 영문, 숫자, 특수문자를 모두 포함해야 합니다.");
-      return false;
-    } else if (안되는특문포함) {
-      console.error("안되는 특문 포함!!");
+    const regex = /^(?=.*[a-zA-Z])(?=.*[!@~])(?=.*[0-9])[a-zA-Z0-9!@~]{8,20}$/;
+    if (regex.test(password)) {
+      return true;
+    } else {
       window.alert("비밀번호는 영문, 숫자, 특수문자를 모두 포함해야 합니다.");
       return false;
     }
-
-    return true;
   };
 }
 

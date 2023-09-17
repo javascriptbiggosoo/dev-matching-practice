@@ -7,9 +7,49 @@
 // 2. TODO: ing
 
 class Reservation {
-  관람인원수 = 0;
+  // 1.1.1 어른과 어린이/청소년의 경우 0명이 기본값으로 선택되어야 합니다.
+  어른 = 0;
+  어린이 = 0;
   장애인 = false;
-  constructor() {}
+  관람인원수 = 0;
+  $adultBtn = document.querySelector("#adultBtn");
+  $youthBtn = document.querySelector("#youthBtn");
+
+  constructor() {
+    this.checkAdultBtn(this.어른);
+
+    this.$adultBtn.addEventListener(
+      "click",
+      this.handleAdultBtnClick.bind(this.checkAdultBtn)
+    );
+
+    this.render();
+  }
+
+  render() {}
+
+  // TODO: 어린이랑 재활용 가능할덧
+  checkAdultBtn = (어른수) => {
+    console.log("앙");
+    // 1.1.2 어른 및 어린이/청소년 각 항목에서 인원수를 중복으로 선택할 수 없습니다.
+    const bottons = this.$adultBtn.querySelectorAll(".btn");
+    bottons.forEach((button, idx) => {
+      button.classList.remove("toggle");
+      if (idx === 어른수) {
+        // 1.1.3 버튼을 클릭하면 해당 인원 버튼이 선택되었음을 나타내기 위해 버튼의 텍스트와 배경 색상이 변경되어야 합니다.
+        this.어른수 = 어른수;
+        button.classList.add("toggle");
+      }
+    });
+  };
+  handleAdultBtnClick(ev = new PointerEvent()) {
+    console.log(ev);
+    const checkAdultBtn = this;
+    const target = ev.target;
+    if (target === ev.currentTarget) return;
+
+    checkAdultBtn(+target.innerText);
+  }
 }
 
 {
@@ -97,5 +137,21 @@ class Reservation {
 </div>; 
 */
 }
+// theaterBtn.addEventListener("click", () => {
+//   loginSection.style.display = "none";
+//   theaterSection.style.display = "block";
+// });
+
+// for (let i = 0; i < 39; i++) {
+//   const seatBtn = document.createElement("button");
+//   seatBtn.setAttribute("class", "seat disabled");
+//   seatBtn.appendChild(document.createTextNode((i % 13) + 1));
+//   document.getElementById("theaterSeat").appendChild(seatBtn);
+
+//   if (parseInt(i / 13) === 2) {
+//     if (i % 13 > 9) seatBtn.classList.add("handicap");
+//     else seatBtn.classList.add("musseukbox");
+//   }
+// }
 
 export default Reservation;
