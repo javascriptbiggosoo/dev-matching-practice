@@ -8,47 +8,67 @@
 
 class Reservation {
   // 1.1.1 어른과 어린이/청소년의 경우 0명이 기본값으로 선택되어야 합니다.
-  어른 = 0;
-  어린이 = 0;
+  어른수 = 0;
+  어린이수 = 0;
   장애인 = false;
   관람인원수 = 0;
   $adultBtn = document.querySelector("#adultBtn");
   $youthBtn = document.querySelector("#youthBtn");
 
   constructor() {
-    this.checkAdultBtn(this.어른);
-
     this.$adultBtn.addEventListener(
       "click",
-      this.handleAdultBtnClick.bind(this.checkAdultBtn)
+      this.handleAdultBtnClick.bind(this)
+    );
+    this.$youthBtn.addEventListener(
+      "click",
+      this.handleYouthBtnClick.bind(this)
     );
 
     this.render();
   }
 
-  render() {}
-
-  // TODO: 어린이랑 재활용 가능할덧
-  checkAdultBtn = (어른수) => {
-    console.log("앙");
+  // 컴포넌트 쪼개기 삽가능인데 시간내에 가능할지 살짝 애매쓰
+  render = () => {
     // 1.1.2 어른 및 어린이/청소년 각 항목에서 인원수를 중복으로 선택할 수 없습니다.
-    const bottons = this.$adultBtn.querySelectorAll(".btn");
-    bottons.forEach((button, idx) => {
+    const adultBtns = this.$adultBtn.querySelectorAll(".btn");
+    adultBtns.forEach((button, idx) => {
       button.classList.remove("toggle");
-      if (idx === 어른수) {
+      if (idx === this.어른수) {
         // 1.1.3 버튼을 클릭하면 해당 인원 버튼이 선택되었음을 나타내기 위해 버튼의 텍스트와 배경 색상이 변경되어야 합니다.
-        this.어른수 = 어른수;
+        button.classList.add("toggle");
+      }
+    });
+    const youthBtns = this.$youthBtn.querySelectorAll(".btn");
+    youthBtns.forEach((button, idx) => {
+      button.classList.remove("toggle");
+      if (idx === this.어린이수) {
         button.classList.add("toggle");
       }
     });
   };
-  handleAdultBtnClick(ev = new PointerEvent()) {
-    console.log(ev);
-    const checkAdultBtn = this;
+  set어른수 = (num) => {
+    this.어른수 = num;
+
+    this.render();
+  };
+  set어린이수 = (num) => {
+    this.어린이수 = num;
+
+    this.render();
+  };
+
+  handleYouthBtnClick(ev = new PointerEvent()) {
     const target = ev.target;
     if (target === ev.currentTarget) return;
 
-    checkAdultBtn(+target.innerText);
+    this.set어린이수(+target.innerText);
+  }
+  handleAdultBtnClick(ev = new PointerEvent()) {
+    const target = ev.target;
+    if (target === ev.currentTarget) return;
+
+    this.set어른수(+target.innerText);
   }
 }
 
