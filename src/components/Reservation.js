@@ -1,10 +1,7 @@
-/* 일반 */
-// 1. TODO: ing
-// 3. TODO: ing
-// 4. TODO: ing
-
-/* 심화 */
+// 1. TODO: done
 // 2. TODO: ing
+// 3. TODO: yet
+// 4. TODO: yet
 
 class Reservation {
   // 1.1.1 어른과 어린이/청소년의 경우 0명이 기본값으로 선택되어야 합니다.
@@ -12,8 +9,10 @@ class Reservation {
   어린이수 = 0;
   장애인 = false;
   관람인원수 = 0;
+
   $adultBtn = document.querySelector("#adultBtn");
   $youthBtn = document.querySelector("#youthBtn");
+  $checkHandicap = document.querySelector("#checkHandicap");
 
   constructor() {
     this.$adultBtn.addEventListener(
@@ -23,6 +22,10 @@ class Reservation {
     this.$youthBtn.addEventListener(
       "click",
       this.handleYouthBtnClick.bind(this)
+    );
+    this.$checkHandicap.addEventListener(
+      "click",
+      this.handleCheckHandicap.bind(this)
     );
 
     this.render();
@@ -46,6 +49,18 @@ class Reservation {
         button.classList.add("toggle");
       }
     });
+    // 1.2.1, 1.2.3
+    if (
+      (this.어린이수 === 0 && this.어른수 === 0) ||
+      this.어른수 > 3 ||
+      this.어린이수 > 3 ||
+      this.어른수 + this.어린이수 > 3
+    ) {
+      this.$checkHandicap.disabled = true;
+    } else {
+      // 1.2.2 장애인 체크 박스는 관람 인원수의 합이 1명 이상일 때 활성화됩니다.
+      this.$checkHandicap.disabled = false;
+    }
   };
   set어른수 = (num) => {
     this.어른수 = num;
@@ -57,19 +72,27 @@ class Reservation {
 
     this.render();
   };
+  set장애인 = (is장애인) => {
+    this.장애인 = is장애인;
 
-  handleYouthBtnClick(ev = new PointerEvent()) {
-    const target = ev.target;
-    if (target === ev.currentTarget) return;
+    if (this.장애인) {
+      // 1.1.4 TODO: 장애인 체크 박스를 체크하면 일반석과 머쓱박스석은 모두 비활성화되며 체크 해제하면 원래대로 돌아옵니다.
+    }
+  };
 
-    this.set어린이수(+target.innerText);
-  }
-  handleAdultBtnClick(ev = new PointerEvent()) {
+  handleAdultBtnClick = (ev = new PointerEvent()) => {
     const target = ev.target;
     if (target === ev.currentTarget) return;
 
     this.set어른수(+target.innerText);
-  }
+  };
+  handleYouthBtnClick = (ev = new PointerEvent()) => {
+    const target = ev.target;
+    if (target === ev.currentTarget) return;
+
+    this.set어린이수(+target.innerText);
+  };
+  handleCheckHandicap = (ev = new PointerEvent()) => {};
 }
 
 {
@@ -157,10 +180,6 @@ class Reservation {
 </div>; 
 */
 }
-// theaterBtn.addEventListener("click", () => {
-//   loginSection.style.display = "none";
-//   theaterSection.style.display = "block";
-// });
 
 // for (let i = 0; i < 39; i++) {
 //   const seatBtn = document.createElement("button");
