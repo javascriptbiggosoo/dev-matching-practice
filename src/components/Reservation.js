@@ -1,4 +1,4 @@
-// 1. TODO: done
+// 1. TODO: ing
 // 2. TODO: ing
 // 3. TODO: yet
 // 4. TODO: yet
@@ -13,6 +13,8 @@ class Reservation {
   $adultBtn = document.querySelector("#adultBtn");
   $youthBtn = document.querySelector("#youthBtn");
   $checkHandicap = document.querySelector("#checkHandicap");
+  $adultBtns = this.$adultBtn.querySelectorAll(".btn");
+  $youthBtns = this.$youthBtn.querySelectorAll(".btn");
 
   constructor() {
     this.$adultBtn.addEventListener(
@@ -34,16 +36,14 @@ class Reservation {
   // 컴포넌트 쪼개기 삽가능인데 시간내에 가능할지 살짝 애매쓰
   render = () => {
     // 1.1.2 어른 및 어린이/청소년 각 항목에서 인원수를 중복으로 선택할 수 없습니다.
-    const adultBtns = this.$adultBtn.querySelectorAll(".btn");
-    adultBtns.forEach((button, idx) => {
+    this.$adultBtns.forEach((button, idx) => {
       button.classList.remove("toggle");
       if (idx === this.어른수) {
         // 1.1.3 버튼을 클릭하면 해당 인원 버튼이 선택되었음을 나타내기 위해 버튼의 텍스트와 배경 색상이 변경되어야 합니다.
         button.classList.add("toggle");
       }
     });
-    const youthBtns = this.$youthBtn.querySelectorAll(".btn");
-    youthBtns.forEach((button, idx) => {
+    this.$youthBtns.forEach((button, idx) => {
       button.classList.remove("toggle");
       if (idx === this.어린이수) {
         button.classList.add("toggle");
@@ -61,23 +61,45 @@ class Reservation {
       // 1.2.2 장애인 체크 박스는 관람 인원수의 합이 1명 이상일 때 활성화됩니다.
       this.$checkHandicap.disabled = false;
     }
+
+    // 1.2.4 TODO: 장애인 체크 박스를 체크하면 일반석과 머쓱박스석은 모두 비활성화되며 체크 해제하면 원래대로 돌아옵니다.
+    if (this.장애인) {
+    } else {
+    }
   };
-  set어른수 = (num) => {
+  set어른수 = (num = 0) => {
+    // 1.2.5 장애인 체크 박스 클릭 후 관람 인원을 4명 이상으로 변경하는 경우 상황에 맞는 window.alert이 나타납니다.
+    if (this.장애인) {
+      if (this.어린이수 + num > 3) {
+        window.alert(
+          "머쓱관의 장애인 관람석은 3석으로, 3인 이하로 선택해주세요."
+        );
+        return;
+      }
+    }
+
     this.어른수 = num;
 
     this.render();
   };
-  set어린이수 = (num) => {
+  set어린이수 = (num = 0) => {
+    // 1.2.5 장애인 체크 박스 클릭 후 관람 인원을 4명 이상으로 변경하는 경우 상황에 맞는 window.alert이 나타납니다.
+    if (this.장애인) {
+      if (this.어른수 + num > 3) {
+        window.alert(
+          "머쓱관의 장애인 관람석은 3석으로, 3인 이하로 선택해주세요."
+        );
+        return;
+      }
+    }
     this.어린이수 = num;
 
     this.render();
   };
-  set장애인 = (is장애인) => {
+  set장애인 = (is장애인 = "false") => {
     this.장애인 = is장애인;
 
-    if (this.장애인) {
-      // 1.1.4 TODO: 장애인 체크 박스를 체크하면 일반석과 머쓱박스석은 모두 비활성화되며 체크 해제하면 원래대로 돌아옵니다.
-    }
+    this.render();
   };
 
   handleAdultBtnClick = (ev = new PointerEvent()) => {
@@ -92,7 +114,9 @@ class Reservation {
 
     this.set어린이수(+target.innerText);
   };
-  handleCheckHandicap = (ev = new PointerEvent()) => {};
+  handleCheckHandicap = (ev = new PointerEvent()) => {
+    this.set장애인(!this.장애인);
+  };
 }
 
 {
