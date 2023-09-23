@@ -8,13 +8,57 @@ class Reservation {
   어른수 = 0;
   어린이수 = 0;
   장애인 = false;
-  관람인원수 = 0;
+  선택좌석수 = 0;
+  좌석 = [
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ];
 
-  $adultBtn = document.querySelector("#adultBtn");
-  $youthBtn = document.querySelector("#youthBtn");
-  $checkHandicap = document.querySelector("#checkHandicap");
+  $adultBtn = document.getElementById("adultBtn");
+  $youthBtn = document.getElementById("youthBtn");
+  $checkHandicap = document.getElementById("checkHandicap");
   $adultBtns = this.$adultBtn.querySelectorAll(".btn");
   $youthBtns = this.$youthBtn.querySelectorAll(".btn");
+
+  $theaterSeat = document.getElementById("theaterSeat");
+  $seatBtns = this.$theaterSeat.querySelectorAll(".seat");
 
   constructor() {
     this.$adultBtn.addEventListener(
@@ -27,8 +71,17 @@ class Reservation {
     );
     this.$checkHandicap.addEventListener(
       "click",
-      this.handleCheckHandicap.bind(this)
+      this.handleHandicapCheck.bind(this)
     );
+
+    this.$theaterSeat.addEventListener(
+      "click",
+      this.handleTheaterSeatClick.bind(this)
+    );
+    // 딱 한 번
+    this.$seatBtns.forEach((el, idx) => {
+      el.dataset.seatIdx = idx;
+    });
 
     this.render();
   }
@@ -66,6 +119,16 @@ class Reservation {
     if (this.장애인) {
     } else {
     }
+
+    if (this.어린이수 > 0 || this.어른수 > 0) {
+      this.$seatBtns.forEach((el) => {
+        el.classList.remove("disabled");
+      });
+    } else {
+      this.$seatBtns.forEach((el) => {
+        el.classList.add("disabled");
+      });
+    }
   };
   set어른수 = (num = 0) => {
     // 1.2.5 장애인 체크 박스 클릭 후 관람 인원을 4명 이상으로 변경하는 경우 상황에 맞는 window.alert이 나타납니다.
@@ -101,6 +164,14 @@ class Reservation {
 
     this.render();
   };
+  set선택좌석수 = (num = 0) => {
+    this.선택좌석수 = num;
+
+    this.render();
+  };
+  set좌석 = () => {
+    this.render();
+  };
 
   handleAdultBtnClick = (ev = new PointerEvent()) => {
     const target = ev.target;
@@ -114,8 +185,24 @@ class Reservation {
 
     this.set어린이수(+target.innerText);
   };
-  handleCheckHandicap = (ev = new PointerEvent()) => {
+  handleHandicapCheck = (ev = new PointerEvent()) => {
     this.set장애인(!this.장애인);
+  };
+
+  handleTheaterSeatClick = (ev = new PointerEvent()) => {
+    // delegation
+    const $currSeat = ev.target;
+    const currSeatIdx = ev.target.dataset.seatIdx;
+
+    if ($currSeat === ev.currentTarget) return;
+    console.log(currSeatIdx);
+    if (
+      $currSeat.classList.contains("handicap") ||
+      $currSeat.classList.contains("musseukbox")
+    ) {
+    } else {
+      // 2.1.1 TODO: 일반석을 한 좌석이라도 선택하는 경우, 좌석 선택의 3가지 요소(머쓱박스석, 장애인석, 장애인 체크 박스)는 비활성화됩니다.
+    }
   };
 }
 
