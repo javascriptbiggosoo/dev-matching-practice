@@ -164,14 +164,6 @@ class Reservation {
 
     this.render();
   };
-  set선택좌석수 = (num = 0) => {
-    this.선택좌석수 = num;
-
-    this.render();
-  };
-  set좌석 = () => {
-    this.render();
-  };
 
   handleAdultBtnClick = (ev = new PointerEvent()) => {
     const target = ev.target;
@@ -189,21 +181,21 @@ class Reservation {
     this.set장애인(!this.장애인);
   };
 
-  handleTheaterSeatClick = (ev = new PointerEvent()) => {
-    // delegation
-    const $currSeat = ev.target;
-    const currSeatIdx = ev.target.dataset.seatIdx;
+  // handleTheaterSeatClick = (ev = new PointerEvent()) => {
+  //   // delegation
+  //   const $currSeat = ev.target;
+  //   const currSeatIdx = ev.target.dataset.seatIdx;
 
-    if ($currSeat === ev.currentTarget) return;
-    console.log(currSeatIdx);
-    if (
-      $currSeat.classList.contains("handicap") ||
-      $currSeat.classList.contains("musseukbox")
-    ) {
-    } else {
-      // 2.1.1 TODO: 일반석을 한 좌석이라도 선택하는 경우, 좌석 선택의 3가지 요소(머쓱박스석, 장애인석, 장애인 체크 박스)는 비활성화됩니다.
-    }
-  };
+  //   if ($currSeat === ev.currentTarget) return;
+  //   console.log(currSeatIdx);
+  //   if (
+  //     $currSeat.classList.contains("handicap") ||
+  //     $currSeat.classList.contains("musseukbox")
+  //   ) {
+  //   } else {
+  //     // 2.1.1 TODO: 일반석을 한 좌석이라도 선택하는 경우, 좌석 선택의 3가지 요소(머쓱박스석, 장애인석, 장애인 체크 박스)는 비활성화됩니다.
+  //   }
+  // };
 }
 
 {
